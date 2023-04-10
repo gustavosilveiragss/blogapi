@@ -17,7 +17,7 @@ mod payload_models;
 // mod insertables;
 
 use db_utils::{get_pool, AppState, DbActor};
-use services::{fetch_posts};
+use services::{fetch_posts, fetch_single_post, create_post};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -33,6 +33,8 @@ async fn main() -> std::io::Result<()> {
                 db: db_addr.clone(),
             }))
             .service(fetch_posts)
+            .service(fetch_single_post)
+            .service(create_post)
     })
     .bind(("127.0.0.1", 8080))
     .expect("Unable to bind http server")
