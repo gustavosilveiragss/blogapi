@@ -1,40 +1,40 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    Category (id) {
+    categories (id) {
         id -> Int4,
-        name -> Nullable<Text>,
-        createdAt -> Nullable<Timestamptz>,
+        name -> Text,
+        created_at -> Timestamptz,
     }
 }
 
 diesel::table! {
-    Post (id) {
+    posts (id) {
         id -> Int8,
-        createdAt -> Timestamptz,
+        created_at -> Timestamptz,
         title -> Text,
         subtitle -> Text,
         content -> Text,
         published -> Bool,
-        authorId -> Int4,
-        categoryId -> Int4,
+        author_id -> Int4,
+        category_id -> Int4,
     }
 }
 
 diesel::table! {
-    User (id) {
+    users (id) {
         id -> Int4,
-        createdAt -> Timestamptz,
+        created_at -> Timestamptz,
         email -> Text,
         name -> Text,
     }
 }
 
-diesel::joinable!(Post -> Category (categoryId));
-diesel::joinable!(Post -> User (authorId));
+diesel::joinable!(posts -> categories (category_id));
+diesel::joinable!(posts -> users (author_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
-    Category,
-    Post,
-    User,
+    categories,
+    posts,
+    users,
 );
