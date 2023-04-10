@@ -7,7 +7,7 @@ use crate::db_models::{Category, Post, User};
 #[macro_export]
 macro_rules! derive_with_relations {
     (
-        $holder_name:ident: $holder_type:ty,
+        $holder_type:ty,
         $struct_name:ident {
             $($field_name:ident : $field_ty:ty),* $(,)?
         },
@@ -33,7 +33,7 @@ macro_rules! derive_with_relations {
 }
 
 derive_with_relations!(
-    post: Post,
+    Post,
     PostWithAuthorCategory {
         id: i64,
         created_at: DateTime<Utc>,
