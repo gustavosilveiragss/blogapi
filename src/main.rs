@@ -17,7 +17,7 @@ mod payload_models;
 // mod insertables;
 
 use db_utils::{get_pool, AppState, DbActor};
-use services::fetch_posts;
+use services::{fetch_posts};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -25,8 +25,6 @@ async fn main() -> std::io::Result<()> {
 
     let db_url: String = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let pool: Pool<ConnectionManager<PgConnection>> = get_pool(&db_url);
-
-    // not fully understanding this one tbh, oh well
     let db_addr = SyncArbiter::start(4, move || DbActor(pool.clone()));
 
     HttpServer::new(move || {

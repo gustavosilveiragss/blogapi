@@ -9,7 +9,7 @@ use serde::Serialize;
 #[derive(Queryable, Debug, Serialize)]
 pub struct Category {
     pub id: i32,
-    pub name: Option<String>,
+    pub name: String,
     pub created_at: DateTime<Utc>,
 }
 

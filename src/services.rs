@@ -1,4 +1,4 @@
-use crate::{messages::FetchPosts, AppState, DbActor};
+use crate::{messages::{FetchPosts}, AppState, DbActor};
 use actix::Addr;
 use actix_web::{get, web::Data, HttpResponse, Responder};
 

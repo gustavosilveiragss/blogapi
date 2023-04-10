@@ -1,4 +1,4 @@
-use crate::payload_models::PostWithAuthorCategory;
+use crate::payload_models::{PostWithAuthorCategory};
 use actix::Message;
 use diesel::QueryResult;
 
