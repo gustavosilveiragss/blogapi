@@ -53,8 +53,7 @@ impl Handler<FetchSinglePost> for DbActor {
                 posts::all_columns,
                 users::all_columns,
                 categories::all_columns,
-            ))
-            .order_by(posts::created_at.desc());
+            ));
 
         let post_with_author_category = query
             .first::<(Post, User, Category)>(&mut conn)
