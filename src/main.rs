@@ -14,10 +14,9 @@ mod actors;
 mod db_models;
 mod schema;
 mod payload_models;
-// mod insertables;
 
 use db_utils::{get_pool, AppState, DbActor};
-use services::{fetch_posts, fetch_single_post, create_post};
+use services::{fetch_posts, fetch_single_post, create_post, fetch_filtered_posts};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -33,6 +32,7 @@ async fn main() -> std::io::Result<()> {
                 db: db_addr.clone(),
             }))
             .service(fetch_posts)
+            .service(fetch_filtered_posts)
             .service(fetch_single_post)
             .service(create_post)
     })
