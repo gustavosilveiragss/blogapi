@@ -16,7 +16,7 @@ mod schema;
 mod payload_models;
 
 use db_utils::{get_pool, AppState, DbActor};
-use services::{fetch_posts, fetch_single_post, create_post, fetch_filtered_posts};
+use services::{fetch_posts, fetch_single_post, create_post, fetch_filtered_posts, fetch_posts_search};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -33,6 +33,7 @@ async fn main() -> std::io::Result<()> {
             }))
             .service(fetch_posts)
             .service(fetch_filtered_posts)
+            .service(fetch_posts_search)
             .service(fetch_single_post)
             .service(create_post)
     })

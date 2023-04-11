@@ -17,6 +17,12 @@ pub struct FetchFilteredPosts {
 }
 
 #[derive(Message)]
+#[rtype(result = "QueryResult<Vec<Post>>")]
+pub struct FetchPostsSearch {
+    pub title: String
+}
+
+#[derive(Message)]
 #[rtype(result = "QueryResult<PostWithAuthorCategory>")]
 pub struct FetchSinglePost {
     pub post_id: i64
