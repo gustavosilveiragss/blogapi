@@ -1,5 +1,5 @@
 use crate::db_models::{Category, Post, User};
-use crate::db_utils::DbActor;
+use crate::utils::DbActor;
 use crate::messages::{CreatePost, FetchPosts, FetchSinglePost, FetchFilteredPosts, FetchPostsSearch};
 use crate::payload_models::PostWithAuthorCategory;
 use crate::schema::{categories, posts, users};
