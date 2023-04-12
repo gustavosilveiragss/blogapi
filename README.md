@@ -8,7 +8,7 @@ Technologies used:
 - Rust
 - Actix Web
 - Diesel ORM
-- PostgreSQL (as of now, hosted on Supabase, but that might change)
+- PostgreSQL (currently hosted on Supabase, but that might change)
 - Docker
 - Google Cloud Run
 
