@@ -11,9 +11,9 @@ use serde::{Deserialize, Serialize};
 pub struct FetchPosts;
 
 #[derive(Message)]
-#[rtype(result = "QueryResult<Vec<PostWithAuthorCategory>>")]
+#[rtype(result = "QueryResult<Vec<PostWithCategory>>")]
 pub struct FetchFilteredPosts {
-    pub category_id: i32
+    pub category_ids: Vec<i32>
 }
 
 #[derive(Message)]

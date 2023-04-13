@@ -1,5 +1,5 @@
 use crate::{
-    messages::{CreatePost, FetchPosts, FetchSinglePost, FetchFilteredPosts, FetchPostsSearch},
+    messages::{CreatePost, FetchFilteredPosts, FetchPosts, FetchPostsSearch, FetchSinglePost},
     AppState, DbActor,
 };
 use actix::Addr;
@@ -22,11 +22,16 @@ pub async fn fetch_posts(state: Data<AppState>) -> impl Responder {
 }
 
 #[get("/category/{id}")]
-pub async fn fetch_filtered_posts(state: Data<AppState>, path: Path<i32>) -> impl Responder {
-    let category_id = path.into_inner();
+pub async fn fetch_filtered_posts(state: Data<AppState>, path: Path<String>) -> impl Responder {
+    let category_ids = path
+        .into_inner()
+        .split(',')
+        .map(|id| id.parse().unwrap())
+        .collect();
+
     let db: Addr<DbActor> = state.as_ref().db.clone();
 
-    match db.send(FetchFilteredPosts { category_id }).await {
+    match db.send(FetchFilteredPosts { category_ids }).await {
         Ok(Ok(info)) => HttpResponse::Ok().json(info),
         Ok(Err(_)) => HttpResponse::NotFound().json("No posts found"),
         _ => HttpResponse::InternalServerError().json("Unable to retrieve posts"),
@@ -58,10 +63,7 @@ pub async fn fetch_single_post(state: Data<AppState>, path: Path<i64>) -> impl R
 }
 
 #[post("/post")]
-pub async fn create_post(
-    state: Data<AppState>,
-    body: Json<CreatePost>,
-) -> impl Responder {
+pub async fn create_post(state: Data<AppState>, body: Json<CreatePost>) -> impl Responder {
     let db: Addr<DbActor> = state.as_ref().db.clone();
 
     match db
