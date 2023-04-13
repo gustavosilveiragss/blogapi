@@ -1,7 +1,7 @@
 use crate::db_models::{Category, Post, User};
 use crate::utils::DbActor;
 use crate::messages::{CreatePost, FetchPosts, FetchSinglePost, FetchFilteredPosts, FetchPostsSearch};
-use crate::payload_models::PostWithAuthorCategory;
+use crate::payload_models::{PostWithAuthorCategory, PostWithCategory};
 use crate::schema::{categories, posts, users};
 
 use actix::Handler;
@@ -11,7 +11,7 @@ use diesel::{self, prelude::*};
 sql_function!(fn lower(a: VarChar) -> VarChar);
 
 impl Handler<FetchPosts> for DbActor {
-    type Result = QueryResult<Vec<PostWithAuthorCategory>>;
+    type Result = QueryResult<Vec<PostWithCategory>>;
 
     fn handle(&mut self, _msg: FetchPosts, _ctx: &mut Self::Context) -> Self::Result {
         let mut conn = self
@@ -20,23 +20,21 @@ impl Handler<FetchPosts> for DbActor {
             .expect("Fetch Posts: Unable to establish connection");
 
         let query = posts::table
-            .inner_join(users::table)
             .inner_join(categories::table)
             .select((
                 posts::all_columns,
-                users::all_columns,
                 categories::all_columns,
             ))
             .order_by(posts::created_at.desc());
 
-        let posts_with_author_category = query
-            .load::<(Post, User, Category)>(&mut conn)
+        let posts_with_category = query
+            .load::<(Post, Category)>(&mut conn)
             .unwrap()
             .into_iter()
-            .map(|(post, user, category)| PostWithAuthorCategory::build(post, user, category))
+            .map(|(post, category)| PostWithCategory::build(post, category))
             .collect::<Vec<_>>();
 
-        Ok(posts_with_author_category)
+        Ok(posts_with_category)
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::payload_models::{PostWithAuthorCategory};
+use crate::payload_models::{PostWithAuthorCategory, PostWithCategory};
 use crate::db_models::{Post};
 use crate::schema::posts;
 use actix::Message;
@@ -7,7 +7,7 @@ use diesel::{QueryResult, Insertable};
 use serde::{Deserialize, Serialize};
 
 #[derive(Message)]
-#[rtype(result = "QueryResult<Vec<PostWithAuthorCategory>>")]
+#[rtype(result = "QueryResult<Vec<PostWithCategory>>")]
 pub struct FetchPosts;
 
 #[derive(Message)]
