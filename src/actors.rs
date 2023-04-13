@@ -1,6 +1,6 @@
 use crate::db_models::{Category, Post, User};
 use crate::utils::DbActor;
-use crate::messages::{CreatePost, FetchPosts, FetchSinglePost, FetchFilteredPosts, FetchPostsSearch};
+use crate::messages::{CreatePost, FetchPosts, FetchSinglePost, FetchFilteredPosts, FetchPostsSearch, FetchCategories};
 use crate::payload_models::{PostWithAuthorCategory, PostWithCategory};
 use crate::schema::{categories, posts, users};
 
@@ -38,6 +38,26 @@ impl Handler<FetchPosts> for DbActor {
     }
 }
 
+impl Handler<FetchCategories> for DbActor {
+    type Result = QueryResult<Vec<Category>>;
+
+    fn handle(&mut self, _msg: FetchCategories, _ctx: &mut Self::Context) -> Self::Result {
+        let mut conn = self
+            .0
+            .get()
+            .expect("Fetch Categories: Unable to establish connection");
+
+        let query = categories::table
+            .order_by(categories::created_at.desc());
+
+        let posts_with_category = query
+            .load::<Category>(&mut conn)
+            .unwrap();
+
+        Ok(posts_with_category)
+    }
+}
+
 impl Handler<FetchFilteredPosts> for DbActor {
     type Result = QueryResult<Vec<PostWithCategory>>;
 
@@ -45,7 +65,7 @@ impl Handler<FetchFilteredPosts> for DbActor {
         let mut conn = self
             .0
             .get()
-            .expect("Fetch Posts: Unable to establish connection");
+            .expect("Fetch Filtered Posts: Unable to establish connection");
 
         let query = posts::table
             .filter(posts::category_id.eq_any(&msg.category_ids))

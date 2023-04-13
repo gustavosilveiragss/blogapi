@@ -1,5 +1,5 @@
 use crate::payload_models::{PostWithAuthorCategory, PostWithCategory};
-use crate::db_models::{Post};
+use crate::db_models::{Post, Category};
 use crate::schema::posts;
 use actix::Message;
 use chrono::{DateTime, Utc};
@@ -11,10 +11,15 @@ use serde::{Deserialize, Serialize};
 pub struct FetchPosts;
 
 #[derive(Message)]
+#[rtype(result = "QueryResult<Vec<Category>>")]
+pub struct FetchCategories;
+
+#[derive(Message)]
 #[rtype(result = "QueryResult<Vec<PostWithCategory>>")]
 pub struct FetchFilteredPosts {
     pub category_ids: Vec<i32>
 }
+
 
 #[derive(Message)]
 #[rtype(result = "QueryResult<Vec<Post>>")]
