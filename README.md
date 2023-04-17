@@ -5,10 +5,11 @@ This is the repo for the API used in my [personal blog](https://github.com/gusta
 Made mainly to learn more about Actix Web and integrating it with a React frontend.
 
 Technologies used:
+
 - Rust
 - Actix Web
 - Diesel ORM
-- PostgreSQL (currently hosted on Supabase, but that might change)
+- PostgreSQL
 - Docker
 - Google Cloud Run
 
@@ -41,10 +42,8 @@ There might be some issues with env variables but just set them inside the Googl
 
 This was a fun project to build and quite fulfilling. I'm sure there are lots of refactoring to be made and some of it seems too boiler plate.
 
-I was hosting the previous NextJS API in Vercel, but in the same region as the current host. 
+Testing locally, the average response time for the `fetch all` query with the NextJS API was ~600ms.
 
-The average response time for the `fetch all` query with the NextJS API was ~600ms.
-
-Current average responde time for that query is ~40ms.
+Current average response time for that query is ~40ms.
 
 [BLAZINGLY FAST](https://i.redd.it/kczaqedt9ww81.jpg)
